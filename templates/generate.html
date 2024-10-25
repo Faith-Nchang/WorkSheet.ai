@@ -34,6 +34,12 @@ Generate Worksheet
     <button type="submit" class="bg-blue-500 text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300">Generate</button>
 </form>
 
+
+<!-- Loading Spinner -->
+<div id="loading" class="hidden mt-4">
+    <p>Loading... Please wait.</p>
+    <div class="loader"></div> <!-- You can add CSS styles to make it look nice -->
+</div> 
 <div id="worksheetResult" class="mt-6 p-6">
 {% if response %}
     <h2 class="text-3xl font-bold mb-6">Worksheet</h2>
@@ -42,6 +48,9 @@ Generate Worksheet
             <li class="border border-gray-300 p-5 rounded-lg mb-4">
             <div>
                 Question {{ loop.index }}: {{ item.question }}
+            </div>
+            <div class="mb-4">
+                <img src="{{ item.image }}" alt="Question Image" class="mt-4" width="300px"> 
             </div>
             <div>
                 <input type="text" name="answer" placeholder="Enter your answer" class="border border-gray-300 p-5 rounded-lg w-full m-2] text-black">
@@ -76,10 +85,15 @@ Generate Worksheet
 </div>
 
 <script>
-// document.getElementById('form').addEventListener('submit', function() {
-//     document.getElementById('worksheetResult').innerHTML = '';
-// });
+    const form = document.getElementById('form');
+    const loading = document.getElementById('loading');
+
+    form.addEventListener('submit', function() {
+        // Show loading indicator
+        loading.classList.remove('hidden');
+    });
 </script>
+
 </div>
 </div>
 

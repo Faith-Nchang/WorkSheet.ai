@@ -29,6 +29,8 @@ def home():
 def generate():
     user_prompt = None 
     difficulty = None
+    question_count = None
+    error = None
     response = None
     if request.method == 'POST':
         user_prompt = request.form.get('prompt')
@@ -42,10 +44,12 @@ def generate():
             "worksheet": [
                 {
                     "question": "What is the capital of France?",
+                    "image": 'image_url';
                     "answer": "Paris"
                 },
                 {
                     "question": "What is the capital of Spain?",
+                    "image": 'image_url';
                     "answer": "Madrid"
                 }
             ]
@@ -53,31 +57,57 @@ def generate():
         
         Respond only in JSON format with no extra text.
         '''
-
-        client = OpenAI()
-
-        # Generate response using OpenAI API
-        completion = client.chat.completions.create(
-            model="gpt-4o",  # replace with your model name
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {
-                    "role": "user",
-                    "content": f"Generate a worksheet of {question_count} questions with a difficulty of {difficulty} based on the following prompt: {user_prompt}"
-                }
-            ]
-        )
-
-        # Extract response content
-        response_text = completion.choices[0].message.content   
-        
-        # Parse the JSON response if necessary
         try:
+            client = OpenAI()
+
+            # Generate response using OpenAI API
+            completion = client.chat.completions.create(
+                model="gpt-4o",  
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {
+                        "role": "user",
+                        "content": f"Generate a worksheet of {question_count} questions with a difficulty of {difficulty} based on the following prompt: {user_prompt}"
+                    }
+                ]
+            )
+
+            # Extract response content
+            response_text = completion.choices[0].message.content   
+            
+            # Parse the JSON response if necessary
+        
             response = json.loads(response_text)
+
+             # Generate images for each question using DALL-E
+            for item in response.get('worksheet', []):
+                question = item['question']
+                # Generate an image using DALL-E
+                image_response = client.images.generate(
+                    model="dall-e-3",
+                    prompt="A illustration of this prompt " + question + " and the answer being" + item['answer'] + ". The answer is only meant to  be used for context and should not be included in the image.",
+                    size="1024x1024",
+                    quality="standard",
+                    n=1,
+                )
+
+                image_url = image_response.data[0].url
+
+                item["image"] = image_url
+
+   
         except json.JSONDecodeError:
-            response = {"error": "Failed to parse the response"}
-        return render_template('generate.html', response=response.get('worksheet', []))
-    return render_template('generate.html', response=[])
+            error = "Failed to parse the response from the API."
+        except Exception as e:
+            error = f"An unexpected error occurred: {str(e)}"
+
+        
+
+
+        return render_template('generate.html', response=response.get('worksheet', []), error=error)
+    
+    return render_template('generate.html', response=[], error=None)
+
 
 
 @app.route("/config")
@@ -150,4 +180,4 @@ def stripe_webhook():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
