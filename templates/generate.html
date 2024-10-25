@@ -5,5 +5,66 @@ Generate Worksheet
 {% endblock %}
 
 {% block content %}
+<div class="container mx-auto px-6 text-center">
+    <h1 class="text-4xl font-bold mb-4">Generate Worksheet</h1>
+    <p class="text-xl mb-8">Generate tailored worksheets instantly with just a few prompts. Perfect for educators and students!</p>
+<form id="form" method="post">
+    <input id="prompt" type="text" name="prompt" placeholder="Enter your prompt" class="border border-gray-300 p-5 rounded-lg w-full m-5  ">
+    <select id="difficulty" name="difficulty" class="border border-gray-300 p-5 rounded-lg w-full m-10 max-w-sm">
+        <option value="" disabled selected>Select Difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+    <input id="question_count" type="number" name="question_count" placeholder="Enter number of questions" class="border border-gray-300 p-5 rounded-lg w-full m-10 max-w-sm">
+    <button type="submit" class="bg-blue-500 text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300">Generate</button>
+</form>
 
+<div id="worksheetResult" class="mt-6 p-6">
+{% if response %}
+    <h2 class="text-3xl font-bold mb-6">Worksheet</h2>
+    <ul class="mt-6">
+        {% for item in response %}
+            <li class="border border-gray-300 p-5 rounded-lg mb-4">
+            <div>
+                Question {{ loop.index }}: {{ item.question }}
+            </div>
+            <div>
+                <input type="text" name="answer" placeholder="Enter your answer" class="border border-gray-300 p-5 rounded-lg w-full m-2]">
+            </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if response %}
+     <h2>Answers to worksheet</h2>
+
+    <ul class="mt-6">
+        {% for item in response %}
+            <li class="border border-gray-300 p-2 rounded-lg mb-2">
+            <div>
+                Question {{ loop.index }}: {{ item.answer }}
+            </div>
+            </li>
+        {% endfor %}
+
+{% endif %}
+
+{% if error %}
+    <p class="text-red-500">{{ error }}</p>
+{% endif %}
+</div>
+
+<script>
+document.getElementById('form').addEventListener('submit', function() {
+    document.getElementById('worksheetResult').innerHTML = '';
+});
+</script>
+</div>
+{% endblock %}
+
+
+
+{% block footer %}
 {% endblock %}
