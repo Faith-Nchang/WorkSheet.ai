@@ -4,21 +4,33 @@
 Generate Worksheet
 {% endblock %}
 
-<div class="bg-black text-white">
 
 {% block content %}
+<div class="bg-black text-white p-20">
+
 <div class="container mx-auto px-6 text-center">
-    <h1 class="text-4xl font-bold mb-4">Generate Worksheet</h1>
-    <p class="text-xl mb-8">Generate tailored worksheets instantly with just a few prompts. Perfect for educators and students!</p>
+
+    <div class="justify-between flex">
+        <h1 class="text-4xl font-bold mb-4">Generate Worksheet</h1>
+
+        <div>
+            <a href="/" class="mt-6 inline-block bg-green-600 text-white rounded-lg px-6 py-2 hover:bg-green-700 transition duration-200">Go to Dashboard</a>
+
+
+            <button class="bg-blue-900 py-3 px-8 ml-5 rounded-full hover:bg-blue-100 hover:text-black paymentBtn" id="paymentBtn" >Get Pro</button>
+
+        </div>
+    </div>
+    <p class="text-xl mb-8 mt-4">Generate tailored worksheets instantly with just a few prompts. Perfect for educators and students!</p>
 <form id="form" method="post">
-    <input id="prompt" type="text" name="prompt" placeholder="Enter your prompt" class="border border-gray-300 p-5 rounded-lg w-full m-5  ">
-    <select id="difficulty" name="difficulty" class="border border-gray-300 p-5 rounded-lg w-full m-10 max-w-sm">
+    <input id="prompt" type="text" name="prompt" placeholder="Enter your prompt" class="border border-gray-300 p-5 rounded-lg w-full m-2  ">
+    <select id="difficulty" name="difficulty" class="border border-gray-300 p-5 rounded-lg w-full m-2 max-w-sm text-black">
         <option value="" disabled selected>Select Difficulty</option>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
     </select>
-    <input id="question_count" type="number" name="question_count" placeholder="Enter number of questions" class="border border-gray-300 p-5 rounded-lg w-full m-10 max-w-sm">
+    <input id="question_count" type="number" name="question_count" placeholder="Enter number of questions" class="border border-gray-300 p-5 rounded-lg w-full m-10 max-w-sm text-black">
     <button type="submit" class="bg-blue-500 text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-600 transition duration-300">Generate</button>
 </form>
 
@@ -32,7 +44,7 @@ Generate Worksheet
                 Question {{ loop.index }}: {{ item.question }}
             </div>
             <div>
-                <input type="text" name="answer" placeholder="Enter your answer" class="border border-gray-300 p-5 rounded-lg w-full m-2]">
+                <input type="text" name="answer" placeholder="Enter your answer" class="border border-gray-300 p-5 rounded-lg w-full m-2] text-black">
             </div>
             </li>
         {% endfor %}
@@ -69,8 +81,9 @@ Generate Worksheet
 // });
 </script>
 </div>
-{% endblock %}
 </div>
+
+{% endblock %}
 
 
 
