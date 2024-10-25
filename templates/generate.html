@@ -4,6 +4,8 @@
 Generate Worksheet
 {% endblock %}
 
+<div class="bg-black text-white">
+
 {% block content %}
 <div class="container mx-auto px-6 text-center">
     <h1 class="text-4xl font-bold mb-4">Generate Worksheet</h1>
@@ -37,8 +39,11 @@ Generate Worksheet
     </ul>
 {% endif %}
 
-{% if response %}
-     <h2>Answers to worksheet</h2>
+
+<div class="m-10 mt-20 ">
+
+    {% if response %}
+     <h1 class="text-3xl font-bold mb-6">Answers to worksheet</h1>
 
     <ul class="mt-6">
         {% for item in response %}
@@ -51,18 +56,21 @@ Generate Worksheet
 
 {% endif %}
 
+</div>
+
 {% if error %}
     <p class="text-red-500">{{ error }}</p>
 {% endif %}
 </div>
 
 <script>
-document.getElementById('form').addEventListener('submit', function() {
-    document.getElementById('worksheetResult').innerHTML = '';
-});
+// document.getElementById('form').addEventListener('submit', function() {
+//     document.getElementById('worksheetResult').innerHTML = '';
+// });
 </script>
 </div>
 {% endblock %}
+</div>
 
 
 
